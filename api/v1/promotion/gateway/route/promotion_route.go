@@ -5,6 +5,7 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/gateway/handler"
 )
 
+// PromotionRoute is the interface
 type PromotionRoute interface {
 	Initial(e *echo.Echo)
 }
@@ -13,6 +14,7 @@ type promotionRoute struct {
 	Handle handler.PromotionHandler
 }
 
+// NewPromotionRoute is the function new promotion route
 func NewPromotionRoute(handler handler.PromotionHandler) PromotionRoute {
 	return &promotionRoute{
 		Handle: handler,

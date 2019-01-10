@@ -1,5 +1,6 @@
 package model
 
+// Promotion is the model
 type Promotion struct {
 	ID          int           `json:"id" db:"id"`
 	Code        string        `json:"code" db:"code"`

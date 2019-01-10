@@ -9,6 +9,12 @@ go get -u github.com/prongbang/goclean
 <img src="http://blog.cleancoder.com/uncle-bob/images/2012-08-13-the-clean-architecture/CleanArchitecture.jpg">
 <center>ภาพจาก blog.cleancoder.com</center>
 
+### Go module feature ด้วยคำสั่ง
+
+```
+export GO111MODULE=on
+```
+
 ### Test
 
 - 1

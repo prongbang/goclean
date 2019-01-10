@@ -9,6 +9,7 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/model"
 )
 
+// PromotionHandler is the interface
 type PromotionHandler interface {
 	Add(c echo.Context) error
 	GetAll(c echo.Context) error
@@ -20,6 +21,7 @@ type promotionHandler struct {
 	UseCase domain.PromotionUseCase
 }
 
+// NewPromotionHandler is the function new promotion handler
 func NewPromotionHandler(useCase domain.PromotionUseCase) PromotionHandler {
 
 	return &promotionHandler{

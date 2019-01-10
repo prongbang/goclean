@@ -7,6 +7,7 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/model"
 )
 
+// PromotionUseCase is the interface
 type PromotionUseCase interface {
 	Add(data *model.Promotion) error
 	GetAll() ([]model.Promotion, error)
@@ -18,6 +19,7 @@ type promotionUseCase struct {
 	Repo repository.PromotionRepository
 }
 
+// NewPromotionUseCase is the function new promotion use case
 func NewPromotionUseCase(repo repository.PromotionRepository) PromotionUseCase {
 	return &promotionUseCase{
 		Repo: repo,

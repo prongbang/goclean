@@ -7,31 +7,31 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/gateway/handler"
 )
 
-// Provide Database
+// ProvideDatabaseHelper is the Provide Database
 func ProvideDatabaseHelper() datasource.DatabaseHelper {
 
 	return datasource.GetDatabaseMock()
 }
 
-// Provide DataSource
+// ProvidePromotionDataSource is the Provide DataSource
 func ProvidePromotionDataSource() datasource.PromotionDataSource {
 
 	return datasource.NewPromotionDataSource(ProvideDatabaseHelper())
 }
 
-// Provide Repository
+// ProvidePromotionRepository is the Provide Repository
 func ProvidePromotionRepository() repository.PromotionRepository {
 
 	return repository.NewPromotionRepository(ProvidePromotionDataSource())
 }
 
-// Provide UseCase
+// ProvidePromotionUseCase is the Provide UseCase
 func ProvidePromotionUseCase() domain.PromotionUseCase {
 
 	return domain.NewPromotionUseCase(ProvidePromotionRepository())
 }
 
-// Provide Handler
+// ProvidePromotionHandler is the Provide Handler
 func ProvidePromotionHandler() handler.PromotionHandler {
 
 	return handler.NewPromotionHandler(ProvidePromotionUseCase())

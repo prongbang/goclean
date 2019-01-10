@@ -5,6 +5,7 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/model"
 )
 
+// PromotionRepository is the interface
 type PromotionRepository interface {
 	Add(data *model.Promotion) error
 	GetAll() ([]model.Promotion, error)
@@ -16,6 +17,7 @@ type promotionRepository struct {
 	Ds datasource.PromotionDataSource
 }
 
+// NewPromotionRepository is the function
 func NewPromotionRepository(ds datasource.PromotionDataSource) PromotionRepository {
 	return &promotionRepository{
 		Ds: ds,

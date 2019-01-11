@@ -2,6 +2,7 @@
 
 
 [![Build Status](http://img.shields.io/travis/prongbang/goclean.svg)](https://travis-ci.org/prongbang/goclean)
+[![Codecov](https://img.shields.io/codecov/c/github/prongbang/goclean.svg)](https://codecov.io/gh/prongbang/goclean) 
 
 ### Install
 

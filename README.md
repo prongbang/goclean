@@ -1,7 +1,7 @@
 # Go Clean Architechture
 
 
-[![Build Status](http://img.shields.io/travis/prongbang/goclean.svg?style=flat-square)](https://travis-ci.org/prongbang/goclean)
+[![Build Status](http://img.shields.io/travis/prongbang/goclean.svg)](https://travis-ci.org/prongbang/goclean)
 
 ### Install
 

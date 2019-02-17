@@ -42,6 +42,7 @@ go test -cover ./...
 
 ### Test coverage report
 
+- Run test
 ```
 make cover
 ```
@@ -52,6 +53,10 @@ or
 go test -cover ./... -coverprofile=cover.out
 go tool cover -html=cover.out -o coverage.html
 ```
+
+- HTML Report
+
+Can open file `coverage.htm` in browser
 
 ### Benchmark
 

@@ -34,6 +34,19 @@ go test -v ./...
 go test -cover ./...
 ```
 
+### Test coverage report
+
+```
+make cover
+```
+
+or
+
+```
+go test -cover ./... -coverprofile=cover.out
+go tool cover -html=cover.out -o coverage.html
+```
+
 ### Benchmark
 
 Benchmark สำหรับวัดประสิทธิภาพการทำงานของ code ทั้งความเร็ว ทั้งการใช้งาน resource ต่าง ๆ ทำการ run หลาย ๆ ครั้ง โดยที่ค่า b.N จะเพิ่มขึ้นเรื่อย ๆ จนกว่าผลการทำงานจะมีค่าที่เสถียร function ที่ต้องทำการทดสอบต้องอยู่ใน loop ลักษณะนี้เท่านั้น

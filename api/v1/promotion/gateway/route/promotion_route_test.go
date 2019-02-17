@@ -4,12 +4,23 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/labstack/echo"
+	"github.com/prongbang/goclean/api/v1/promotion/di"
+	"github.com/prongbang/goclean/api/v1/promotion/gateway/route"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/labstack/echo"
 )
 
+var router route.PromotionRoute
+var e *echo.Echo
+
+func init() {
+	router = route.NewPromotionRoute(di.ProvidePromotionHandler())
+	e = echo.New()
+	router.Initial(e)
+}
+
 func TestRoute(t *testing.T) {
-	e := echo.New()
 	r := e.Router()
 
 	// Routes

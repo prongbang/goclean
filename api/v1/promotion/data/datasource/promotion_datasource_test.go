@@ -44,7 +44,7 @@ func mockPromotion() model.Promotion {
 	return data
 }
 
-func TestAdd(t *testing.T) {
+func TestAddSuccess(t *testing.T) {
 	data := mockPromotion()
 	if err := ds.Add(&data); err != nil {
 		t.Error("Cannot add promotion")
@@ -55,8 +55,19 @@ func TestAdd(t *testing.T) {
 	}
 }
 
+func TestAddFailure(t *testing.T) {
+	data := model.Promotion{}
+	if err := ds.Add(&data); err == nil {
+		t.Error("Cannot add promotion")
+	}
+
+	if data.ID == 0 {
+		log.Println("Add promotion success")
+	}
+}
+
 func TestAddAndGetAll(t *testing.T) {
-	TestAdd(t)
+	TestAddSuccess(t)
 
 	data, err := ds.GetAll()
 	if err != nil {
@@ -69,7 +80,7 @@ func TestAddAndGetAll(t *testing.T) {
 }
 
 func TestAddAndGetById(t *testing.T) {
-	TestAdd(t)
+	TestAddSuccess(t)
 
 	data, err := ds.Get(1)
 	if err != nil {
@@ -78,6 +89,20 @@ func TestAddAndGetById(t *testing.T) {
 
 	if data.ID == 0 {
 		t.Error("Data not found")
+	}
+
+}
+
+func TestAddAndGetByIdNotfound(t *testing.T) {
+	TestAddSuccess(t)
+
+	data, err := ds.Get(2)
+	if err == nil {
+		t.Error("Found data get promotion by id 2")
+	}
+
+	if data.ID != 0 {
+		t.Error("Data found id 2")
 	}
 
 }

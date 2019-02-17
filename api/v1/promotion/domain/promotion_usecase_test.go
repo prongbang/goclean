@@ -44,7 +44,7 @@ func mockPromotion() model.Promotion {
 	return data
 }
 
-func TestAdd(t *testing.T) {
+func TestAddSuccess(t *testing.T) {
 	data := mockPromotion()
 	if err := usecase.Add(&data); err != nil {
 		t.Error("Cannot add promotion")
@@ -54,9 +54,19 @@ func TestAdd(t *testing.T) {
 		log.Println("Add promotion success")
 	}
 }
+func TestAddFailure(t *testing.T) {
+	data := model.Promotion{}
+	if err := usecase.Add(&data); err == nil {
+		t.Error("Cannot add promotion")
+	}
+
+	if data.ID == 0 {
+		log.Println("Add promotion success")
+	}
+}
 
 func TestAddAndGetAll(t *testing.T) {
-	TestAdd(t)
+	TestAddSuccess(t)
 
 	data, err := usecase.GetAll()
 	if err != nil {
@@ -69,7 +79,7 @@ func TestAddAndGetAll(t *testing.T) {
 }
 
 func TestAddAndGetById(t *testing.T) {
-	TestAdd(t)
+	TestAddSuccess(t)
 
 	data, err := usecase.Get(1)
 	if err != nil {

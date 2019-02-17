@@ -1,6 +1,8 @@
 package datasource
 
 import (
+	"fmt"
+
 	"github.com/prongbang/goclean/api/v1/promotion/model"
 )
 
@@ -37,9 +39,14 @@ func NewPromotionDataSource(db DatabaseHelper) PromotionDataSource {
 
 func (repo *promotionDataSource) Add(data *model.Promotion) error {
 
-	repo.Db.Store[data.ID] = *data
+	if data.ID > 0 {
 
-	return nil
+		repo.Db.Store[data.ID] = *data
+
+		return nil
+	}
+
+	return fmt.Errorf("Cannot add data: %s", "is empty")
 }
 
 func (repo *promotionDataSource) GetAll() ([]model.Promotion, error) {
@@ -54,5 +61,11 @@ func (repo *promotionDataSource) GetAll() ([]model.Promotion, error) {
 
 func (repo *promotionDataSource) Get(id int) (model.Promotion, error) {
 
-	return repo.Db.Store[id], nil
+	data := repo.Db.Store[id]
+	if data.ID == id {
+
+		return repo.Db.Store[id], nil
+	}
+
+	return model.Promotion{}, fmt.Errorf("Not found id: %d", id)
 }

@@ -48,11 +48,9 @@ func (h *promotionHandler) Add(c echo.Context) error {
 
 func (h *promotionHandler) GetAll(c echo.Context) error {
 
-	promotions, err := h.UseCase.GetAll()
-	if err == nil {
-		return c.JSON(http.StatusOK, promotions)
-	}
-	return c.JSON(http.StatusOK, []model.Promotion{})
+	promotions, _ := h.UseCase.GetAll()
+
+	return c.JSON(http.StatusOK, promotions)
 }
 
 func (h *promotionHandler) Get(c echo.Context) error {

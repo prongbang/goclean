@@ -2,6 +2,7 @@ package handler_test
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -32,7 +33,7 @@ func setupHttpRequest(method, target string, body string) *http.Request {
 	return req
 }
 
-func TestAdd(t *testing.T) {
+func TestAddSuccess(t *testing.T) {
 	req := setupHttpRequest(echo.POST, "/api/v1/promotion", promotionJson)
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
@@ -43,8 +44,32 @@ func TestAdd(t *testing.T) {
 	}
 }
 
-func TestAddAndGetAll(t *testing.T) {
-	TestAdd(t)
+func TestAddBadRequest(t *testing.T) {
+	req := setupHttpRequest(echo.POST, "/api/v1/promotion", "{}")
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+
+	res := handle.Add(ctx)
+	if assert.NoError(t, res) {
+		assert.Equal(t, http.StatusBadRequest, rec.Code)
+		assert.NotEmpty(t, rec.Body.String())
+	}
+}
+
+func TestAddBadGateway(t *testing.T) {
+	req := setupHttpRequest(echo.POST, "/api/v1/promotion", "")
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+
+	res := handle.Add(ctx)
+	if assert.NoError(t, res) {
+		assert.Equal(t, http.StatusBadGateway, rec.Code)
+		assert.NotEmpty(t, rec.Body.String())
+	}
+}
+
+func TestAddAndGetAllSuccess(t *testing.T) {
+	TestAddSuccess(t)
 
 	req := setupHttpRequest(echo.GET, "/api/v1/promotion", "")
 	rec := httptest.NewRecorder()
@@ -60,8 +85,8 @@ func TestAddAndGetAll(t *testing.T) {
 	}
 }
 
-func TestAddAndGetById(t *testing.T) {
-	TestAdd(t)
+func TestAddAndGetByIdSuccess(t *testing.T) {
+	TestAddSuccess(t)
 
 	req := setupHttpRequest(echo.GET, "/api/v1/", promotionJson)
 	rec := httptest.NewRecorder()
@@ -76,5 +101,38 @@ func TestAddAndGetById(t *testing.T) {
 		assert.NotEmpty(t, rec.Body)
 		assert.NoError(t, json.Unmarshal([]byte(rec.Body.String()), &promotion))
 		assert.Equal(t, 1, promotion.ID)
+	}
+}
+
+func TestAddAndGetByIdBadRequest(t *testing.T) {
+	TestAddSuccess(t)
+
+	req := setupHttpRequest(echo.GET, "/api/v1/", "")
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+	ctx.SetPath("/promotion/:id")
+	ctx.SetParamNames("id")
+	ctx.SetParamValues("")
+
+	if assert.NoError(t, handle.Get(ctx)) {
+		assert.Equal(t, http.StatusBadGateway, rec.Code)
+		assert.NotEmpty(t, rec.Body)
+	}
+}
+
+func TestAddAndGetByIdNotFound(t *testing.T) {
+	TestAddBadRequest(t)
+
+	req := setupHttpRequest(echo.GET, "/api/v1/", "")
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+	ctx.SetPath("/promotion/:id")
+	ctx.SetParamNames("id")
+	ctx.SetParamValues("2")
+
+	if assert.NoError(t, handle.Get(ctx)) {
+		log.Println(rec.Body)
+		assert.Equal(t, http.StatusNotFound, rec.Code)
+		assert.NotEmpty(t, rec.Body)
 	}
 }

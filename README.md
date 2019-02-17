@@ -56,7 +56,7 @@ go tool cover -html=cover.out -o coverage.html
 
 - HTML Report
 
-Can open file `coverage.htm` in browser
+Can open file `coverage.html` in browser
 
 ### Benchmark
 

@@ -25,7 +25,7 @@ jobs:
         fi
         
     - name: Test
-      run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+      run: go test -cover ./...
       
     - name: Build
       run: go build -v .

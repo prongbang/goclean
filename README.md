@@ -1,6 +1,7 @@
 # Go Clean Architechture
 
 
+[![Build Status](https://github.com/prongbang/goclean/workflows/Go/badge.svg)](https://github.com/prongbang/goclean/actions)
 [![Build Status](http://img.shields.io/travis/prongbang/goclean.svg)](https://travis-ci.org/prongbang/goclean)
 [![Codecov](https://img.shields.io/codecov/c/github/prongbang/goclean.svg)](https://codecov.io/gh/prongbang/goclean) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/prongbang/goclean)](https://goreportcard.com/report/github.com/prongbang/goclean)

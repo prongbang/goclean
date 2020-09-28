@@ -1,11 +1,6 @@
 # Go Clean Architechture
 
-<<<<<<< HEAD
-=======
-
 [![Build Status](https://github.com/prongbang/goclean/workflows/Go/badge.svg)](https://github.com/prongbang/goclean/actions)
->>>>>>> 0d06db1da625a0e39bffa9d097f5ce8aea0d02fc
-[![Build Status](http://img.shields.io/travis/prongbang/goclean.svg)](https://travis-ci.org/prongbang/goclean)
 [![Codecov](https://img.shields.io/codecov/c/github/prongbang/goclean.svg)](https://codecov.io/gh/prongbang/goclean) 
 [![Go Report Card](https://goreportcard.com/badge/github.com/prongbang/goclean)](https://goreportcard.com/report/github.com/prongbang/goclean)
 

@@ -1,0 +1,144 @@
+basePath: /
+definitions:
+  core.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  model.Promotion:
+    properties:
+      _links:
+        properties:
+          self:
+            properties:
+              href:
+                type: string
+            type: object
+        type: object
+      actions:
+        items:
+          type: string
+        type: array
+      channels:
+        items:
+          type: string
+        type: array
+      code:
+        type: string
+      couponBased:
+        type: boolean
+      createdAt:
+        type: string
+      exclusive:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      priority:
+        type: integer
+      rules:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      used:
+        type: integer
+    type: object
+host: localhost:1323
+info:
+  contact:
+    name: API Support
+    url: https://prongbang.github.io
+  description: This is a swagger for GoClean API
+  license:
+    name: MIT License
+    url: https://github.com/prongbang/goclean/blob/master/LICENSE
+  termsOfService: http://swagger.io/terms/
+  title: GoClean API
+  version: "1.0"
+paths:
+  /api/v1/promotion:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Promotion'
+      security:
+      - APIKeyAuth: []
+      summary: List promotion
+      tags:
+      - promotions
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer Token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Promotion
+        in: body
+        name: promotion
+        required: true
+        schema:
+          $ref: '#/definitions/model.Promotion'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Promotion'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.Error'
+      security:
+      - APIKeyAuth: []
+      summary: Create promotion
+      tags:
+      - promotions
+  /api/v1/promotion/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Promotion ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Promotion'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/core.Error'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/core.Error'
+      security:
+      - APIKeyAuth: []
+      summary: Get a promotion
+      tags:
+      - promotions
+securityDefinitions:
+  APIKeyAuth:
+    in: header
+    name: X-API-KEY
+    type: apiKey
+swagger: "2.0"

@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>datasource: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -247,7 +248,8 @@ import (
         "net/http"
         "strconv"
 
-        "github.com/labstack/echo"
+        "github.com/labstack/echo/v4"
+        "github.com/prongbang/goclean/api/core"
         "github.com/prongbang/goclean/api/v1/promotion/domain"
         "github.com/prongbang/goclean/api/v1/promotion/model"
 )
@@ -266,29 +268,45 @@ type promotionHandler struct {
 
 // NewPromotionHandler is the function new promotion handler
 func NewPromotionHandler(useCase domain.PromotionUseCase) PromotionHandler <span class="cov8" title="1">{
-
         return &amp;promotionHandler{
                 UseCase: useCase,
         }
 }</span>
 
+// @Tags promotions
+// @Summary Create promotion
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Bearer Token"
+// @Param promotion body model.Promotion true "Promotion"
+// @Success 201 {object} model.Promotion
+// @Failure 400 {object} core.Error
+// @Security APIKeyAuth
+// @Router /api/v1/promotion [post]
 func (h *promotionHandler) Add(c echo.Context) error <span class="cov8" title="1">{
         var promotion model.Promotion
         if err := c.Bind(&amp;promotion); err != nil </span><span class="cov8" title="1">{
-                return c.JSON(http.StatusBadGateway, echo.Map{
-                        "message": "Data not found!",
+                return c.JSON(http.StatusBadRequest, core.Error{
+                        Message: "Data not found",
                 })
         }</span>
 
         <span class="cov8" title="1">if err := h.UseCase.Add(&amp;promotion); err != nil </span><span class="cov8" title="1">{
-                return c.JSON(http.StatusBadRequest, echo.Map{
-                        "message": err,
+                return c.JSON(http.StatusBadRequest, core.Error{
+                        Message: err.Error(),
                 })
         }</span>
 
         <span class="cov8" title="1">return c.JSON(http.StatusCreated, promotion)</span>
 }
 
+// @Tags promotions
+// @Summary List promotion
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.Promotion
+// @Security APIKeyAuth
+// @Router /api/v1/promotion [get]
 func (h *promotionHandler) GetAll(c echo.Context) error <span class="cov8" title="1">{
 
         promotions, _ := h.UseCase.GetAll()
@@ -296,20 +314,31 @@ func (h *promotionHandler) GetAll(c echo.Context) error <span class="cov8" title
         return c.JSON(http.StatusOK, promotions)
 }</span>
 
+// @Tags promotions
+// @Summary Get a promotion
+// @Accept json
+// @Produce json
+// @Param id path int true "Promotion ID"
+// @Success 200 {object} model.Promotion
+// @Failure 400 {object} core.Error
+// @Failure 404 {object} core.Error
+// @Security APIKeyAuth
+// @Router /api/v1/promotion/{id} [get]
 func (h *promotionHandler) Get(c echo.Context) error <span class="cov8" title="1">{
-        id := c.Param("id")
-        if id != "" </span><span class="cov8" title="1">{
+        if id := c.Param("id"); id != "" </span><span class="cov8" title="1">{
                 idInt, iErr := strconv.Atoi(id)
                 if idInt &gt; 0 &amp;&amp; iErr == nil </span><span class="cov8" title="1">{
                         promotion, err := h.UseCase.Get(idInt)
                         if err == nil </span><span class="cov8" title="1">{
                                 return c.JSON(http.StatusOK, promotion)
                         }</span>
-                        <span class="cov8" title="1">return c.JSON(http.StatusNotFound, err)</span>
+                        <span class="cov8" title="1">return c.JSON(http.StatusNotFound, core.Error{
+                                Message: err.Error(),
+                        })</span>
                 }
         }
-        <span class="cov8" title="1">return c.JSON(http.StatusBadGateway, echo.Map{
-                "message": "Required parameter id",
+        <span class="cov8" title="1">return c.JSON(http.StatusBadRequest, core.Error{
+                Message: "Required parameter id",
         })</span>
 }
 </pre>
@@ -317,7 +346,7 @@ func (h *promotionHandler) Get(c echo.Context) error <span class="cov8" title="1
 		<pre class="file" id="file4" style="display: none">package route
 
 import (
-        "github.com/labstack/echo"
+        "github.com/labstack/echo/v4"
         "github.com/prongbang/goclean/api/v1/promotion/gateway/handler"
 )
 

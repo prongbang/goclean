@@ -8,7 +8,7 @@ import (
 	"github.com/prongbang/goclean/api/v1/promotion/gateway/route"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 var router route.PromotionRoute

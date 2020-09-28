@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/prongbang/goclean/api/v1/promotion/di"
 	"github.com/prongbang/goclean/api/v1/promotion/gateway/handler"
 	"github.com/prongbang/goclean/api/v1/promotion/model"
@@ -40,7 +40,7 @@ func TestAddSuccess(t *testing.T) {
 
 	if assert.NoError(t, handle.Add(ctx)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)
-		assert.Equal(t, promotionJson, rec.Body.String())
+		assert.NotEmpty(t, rec.Body.String())
 	}
 }
 
@@ -56,14 +56,26 @@ func TestAddBadRequest(t *testing.T) {
 	}
 }
 
-func TestAddBadGateway(t *testing.T) {
+func TestAddBodyInvalidBadRequest(t *testing.T) {
+	req := setupHttpRequest(echo.POST, "/api/v1/promotion", "{id:'1}")
+	rec := httptest.NewRecorder()
+	ctx := e.NewContext(req, rec)
+
+	res := handle.Add(ctx)
+	if assert.NoError(t, res) {
+		assert.Equal(t, http.StatusBadRequest, rec.Code)
+		assert.NotEmpty(t, rec.Body.String())
+	}
+}
+
+func TestAddNoIdBadRequest(t *testing.T) {
 	req := setupHttpRequest(echo.POST, "/api/v1/promotion", "")
 	rec := httptest.NewRecorder()
 	ctx := e.NewContext(req, rec)
 
 	res := handle.Add(ctx)
 	if assert.NoError(t, res) {
-		assert.Equal(t, http.StatusBadGateway, rec.Code)
+		assert.Equal(t, http.StatusBadRequest, rec.Code)
 		assert.NotEmpty(t, rec.Body.String())
 	}
 }
@@ -115,7 +127,7 @@ func TestAddAndGetByIdBadRequest(t *testing.T) {
 	ctx.SetParamValues("")
 
 	if assert.NoError(t, handle.Get(ctx)) {
-		assert.Equal(t, http.StatusBadGateway, rec.Code)
+		assert.Equal(t, http.StatusBadRequest, rec.Code)
 		assert.NotEmpty(t, rec.Body)
 	}
 }

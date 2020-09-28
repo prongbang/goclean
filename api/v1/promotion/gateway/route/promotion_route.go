@@ -1,7 +1,7 @@
 package route
 
 import (
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"github.com/prongbang/goclean/api/v1/promotion/gateway/handler"
 )
 

@@ -1,22 +1,20 @@
-package datasource_test
+package promotion_test
 
 import (
 	"encoding/json"
+	"github.com/prongbang/goclean/internal/app/api/promotion"
+	"github.com/prongbang/goclean/internal/pkg/database"
 	"log"
 	"testing"
-
-	"github.com/prongbang/goclean/api/v1/promotion/data/datasource"
-	"github.com/prongbang/goclean/api/v1/promotion/di"
-	"github.com/prongbang/goclean/api/v1/promotion/model"
 )
 
-var ds datasource.PromotionDataSource
+var ds promotion.DataSource
 
 func init() {
-	ds = datasource.NewPromotionDataSource(di.ProvideDatabaseHelper())
+	ds = promotion.NewDataSource(database.NewDrivers())
 }
 
-func mockPromotion() model.Promotion {
+func mockPromotion() promotion.Promotion {
 	jsonString := `
 	{
 		"id": 1,
@@ -37,39 +35,39 @@ func mockPromotion() model.Promotion {
 			}
 		}
 	}`
-	var data model.Promotion
+	var data promotion.Promotion
 	if err := json.Unmarshal([]byte(jsonString), &data); err != nil {
 		log.Println("Cannot Unmarshal")
 	}
 	return data
 }
 
-func TestAddSuccess(t *testing.T) {
+func TestDataSource_Create(t *testing.T) {
 	data := mockPromotion()
-	if err := ds.Add(&data); err != nil {
+	if err := ds.Create(&data); err != nil {
 		t.Error("Cannot add promotion")
 	}
 
 	if data.ID == 1 {
-		log.Println("Add promotion success")
+		log.Println("Create promotion success")
 	}
 }
 
-func TestAddFailure(t *testing.T) {
-	data := model.Promotion{}
-	if err := ds.Add(&data); err == nil {
+func TestDataSource_GetThenError(t *testing.T) {
+	data := promotion.Promotion{}
+	if err := ds.Create(&data); err == nil {
 		t.Error("Cannot add promotion")
 	}
 
 	if data.ID == 0 {
-		log.Println("Add promotion success")
+		log.Println("Create promotion success")
 	}
 }
 
-func TestAddAndGetAll(t *testing.T) {
-	TestAddSuccess(t)
+func TestDataSource_CreateAndGetSlice(t *testing.T) {
+	TestDataSource_Create(t)
 
-	data, err := ds.GetAll()
+	data, err := ds.FindList()
 	if err != nil {
 		t.Error("Cannot get all promotion")
 	}
@@ -79,10 +77,10 @@ func TestAddAndGetAll(t *testing.T) {
 	}
 }
 
-func TestAddAndGetById(t *testing.T) {
-	TestAddSuccess(t)
+func TestDataSource_CreateAndGet(t *testing.T) {
+	TestDataSource_Create(t)
 
-	data, err := ds.Get(1)
+	data, err := ds.Find(1)
 	if err != nil {
 		t.Error("Cannot get promotion by id")
 	}
@@ -94,9 +92,9 @@ func TestAddAndGetById(t *testing.T) {
 }
 
 func TestAddAndGetByIdNotfound(t *testing.T) {
-	TestAddSuccess(t)
+	TestDataSource_Create(t)
 
-	data, err := ds.Get(2)
+	data, err := ds.Find(2)
 	if err == nil {
 		t.Error("Found data get promotion by id 2")
 	}
@@ -111,6 +109,6 @@ func BenchmarkAdd(b *testing.B) {
 	data := mockPromotion()
 	// run function b.N times
 	for n := 0; n < b.N; n++ {
-		ds.Add(&data)
+		_ = ds.Create(&data)
 	}
 }

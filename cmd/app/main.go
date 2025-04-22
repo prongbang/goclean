@@ -1,11 +1,9 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/prongbang/goclean/api/v1/promotion/di"
-	"github.com/prongbang/goclean/api/v1/promotion/gateway/route"
+	"github.com/prongbang/goclean"
 	_ "github.com/prongbang/goclean/docs"
-	echoSwagger "github.com/swaggo/echo-swagger"
+	"github.com/prongbang/goclean/internal/pkg/database"
 )
 
 // @title GoClean API
@@ -22,12 +20,7 @@ import (
 // @in header
 // @name X-API-KEY
 func main() {
-	e := echo.New()
-
-	// Routes
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	route.NewPromotionRoute(di.ProvidePromotionHandler()).Initial(e)
-
-	// Listener
-	e.Logger.Fatal(e.Start(":1323"))
+	drivers := database.NewDrivers()
+	apis := goclean.NewAPI(drivers)
+	apis.Register()
 }

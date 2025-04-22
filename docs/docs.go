@@ -124,7 +124,7 @@ var doc = `{
                 "tags": [
                     "promotions"
                 ],
-                "summary": "Get a promotion",
+                "summary": "Find a promotion",
                 "parameters": [
                     {
                         "type": "integer",

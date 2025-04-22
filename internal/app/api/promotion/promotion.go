@@ -1,4 +1,4 @@
-package model
+package promotion
 
 // Promotion is the model
 type Promotion struct {

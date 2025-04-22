@@ -1,5 +1,6 @@
 run:
-	go run main.go
+	go run cmd/app/main.go
+
 test:
 	go test -cover ./...
 
@@ -9,3 +10,6 @@ cover:
 
 swaggen:
 	swag init
+
+wire:
+	wire

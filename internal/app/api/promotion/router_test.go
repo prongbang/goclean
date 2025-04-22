@@ -1,23 +1,23 @@
-package route_test
+package promotion_test
 
 import (
+	"github.com/prongbang/goclean/internal/app/api/promotion"
+	"github.com/prongbang/goclean/internal/app/api/promotion/mock"
 	"net/http"
 	"testing"
 
-	"github.com/prongbang/goclean/api/v1/promotion/di"
-	"github.com/prongbang/goclean/api/v1/promotion/gateway/route"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/labstack/echo/v4"
 )
 
-var router route.PromotionRoute
+var router promotion.Router
 var e *echo.Echo
 
 func init() {
-	router = route.NewPromotionRoute(di.ProvidePromotionHandler())
 	e = echo.New()
-	router.Initial(e)
+	router = promotion.NewRouter(mock.NewHandler())
+	router.Initialize(e)
 }
 
 func TestRoute(t *testing.T) {

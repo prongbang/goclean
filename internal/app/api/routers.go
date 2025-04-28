@@ -17,6 +17,7 @@ type routers struct {
 
 func (r *routers) Initialize(c *echo.Echo) {
 	r.PromotionRoute.Initialize(c)
+	r.SwaggerRoute.Initialize(c)
 }
 
 func NewRouters(
